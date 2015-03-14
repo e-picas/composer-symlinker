@@ -1,0 +1,15 @@
+{
+    "name": "atelierspierrot/composer-local-installer",
+    "type": "composer-plugin",
+    "description": "A global autoloader for dev environment.",
+    "require": {
+        "php": ">=5.4.0",
+        "composer-plugin-api": "1.*"
+    },
+    "autoload": {
+        "psr-0": { "ComposerLocalInstaller": "src/" }
+    },
+    "extra": {
+        "class": "ComposerLocalInstaller\\LocalInstallerPlugin"
+    }
+}
