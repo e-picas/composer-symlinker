@@ -2,8 +2,11 @@
 
 namespace ComposerLocalInstaller;
 
+use Composer\Composer;
+use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
+use Composer\Util\Filesystem;
 
 class LocalInstaller extends LibraryInstaller
 {
