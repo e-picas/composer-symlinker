@@ -1,15 +1,18 @@
 {
-    "name": "atelierspierrot/composer-local-installer",
+    "name": "piwi/composer-symlinker",
     "type": "composer-plugin",
-    "description": "A global autoloader for dev environment.",
+    "description": "A package symlinker for local dev environment.",
     "require": {
-        "php": ">=5.4.0",
         "composer-plugin-api": "1.*"
     },
+    "require-dev": {
+        "composer/composer": "1.*"
+    },
+    "minimum-stability": "dev",
     "autoload": {
-        "psr-0": { "ComposerLocalInstaller": "src/" }
+        "psr-0": { "ComposerSymlinker": "src/" }
     },
     "extra": {
-        "class": "ComposerLocalInstaller\\LocalInstallerPlugin"
+        "class": "ComposerSymlinker\\SymlinkerPlugin"
     }
 }
