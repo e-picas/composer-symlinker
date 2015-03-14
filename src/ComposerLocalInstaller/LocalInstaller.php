@@ -26,10 +26,6 @@ class LocalInstaller extends LibraryInstaller
         }
         $local_prefixes         = isset($extra['local-prefixes']) ? $extra['local-prefixes'] : null;
         $this->localPrefixes    = is_array($local_prefixes) ? $local_prefixes : array($local_prefixes);
-
-$this->io->writeError('<warning>local path defined on '.$this->localPath.'</warning>');
-$this->io->writeError('<warning>prefixes defined on '.var_export($this->localPrefixes,true).'</warning>');
-
     }
 
     public function supports($packageType)
@@ -39,7 +35,6 @@ $this->io->writeError('<warning>prefixes defined on '.var_export($this->localPre
 
     public function isConcerned(PackageInterface $package)
     {
-$this->io->writeError('<warning>is concerned '.$package->getPrettyName().' ???</warning>');
         $ok = false;
         foreach ($this->localPrefixes as $prefix) {
             if (
@@ -50,7 +45,6 @@ $this->io->writeError('<warning>is concerned '.$package->getPrettyName().' ???</
                 $ok = true;
             }
         }
-$this->io->writeError('<warning>=> '.var_export($ok, true).'</warning>');
         return $ok;
     }
 
