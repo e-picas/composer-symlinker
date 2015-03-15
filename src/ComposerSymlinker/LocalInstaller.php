@@ -107,6 +107,8 @@ class LocalInstaller extends LibraryInstaller
      * {@inheritDoc}
      *
      * @throws \ComposerSymlinker\FilesystemSymlinkerException if the symbolic link fails
+     *
+     * @link    https://github.com/symfony/Filesystem/blob/master/Filesystem.php#L310
      */
     protected function installCode(PackageInterface $package)
     {
@@ -114,7 +116,7 @@ class LocalInstaller extends LibraryInstaller
         if (!is_null($local_path)) {
             $this->io->writeError("  - Installing <info>" . $package->getName() . "</info> (<comment>as a symbolic link of " . $local_path . "</comment>)");
             $this->initializeVendorSubdir($package);
-            if (false === @symlink($local_path, $this->getInstallPath($package))) {
+            if (true !== @symlink($local_path, $this->getInstallPath($package))) {
                 throw new FilesystemSymlinkerException(
                     sprintf('Symlink fails: "%s" => "%s"', $local_path, $this->getInstallPath($package))
                 );
