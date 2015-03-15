@@ -1,7 +1,7 @@
 {
     "name": "piwi/composer-symlinker",
     "type": "composer-plugin",
-    "description": "A Composer's plugin to install packages as local symbolic links.",
+    "description": "A composer plugin to install packages as local symbolic links",
     "require": {
         "composer-plugin-api": "1.*"
     },
