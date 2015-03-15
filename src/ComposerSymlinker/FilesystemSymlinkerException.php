@@ -1,13 +1,16 @@
 <?php
+/**
+ * This file is part of <https://github.com/piwi/composer-symlinker>
+ */
 
 namespace ComposerSymlinker;
 
-use Composer\Downloader\FilesystemException;
-
 /**
- * Exception thrown when issues exist when trying to create a local symbolic link
+ * Exception thrown on issues when trying to create a local symbolic link
+ *
+ * @author piwi <me@e-piwi.fr>
  */
-class FilesystemSymlinkerException extends FilesystemException
+class FilesystemSymlinkerException extends \Exception
 {
 
     public function __construct($message = null, $code = null, \Exception $previous = null)
