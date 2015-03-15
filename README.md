@@ -3,7 +3,7 @@ Composer symlinker
 
 A [Composer](http://getcomposer.org/) plugin to install packages as local symbolic links.
 
-This project is a *temporary* implementation of using symbolic links to local packages as dependencies
+This plugin is a *temporary* implementation of using symbolic links to local packages as dependencies
 to allow a parallel work process. For a descriptive (and commented) problematic, see
 <https://github.com/composer/composer/issues/1299>.
 
@@ -11,7 +11,7 @@ to allow a parallel work process. For a descriptive (and commented) problematic,
 Usage
 -----
 
-To use this plugin, just add it as a dependency in your `composer.json`:
+To use it, just add it as a dependency in your `composer.json`:
 
 ```json
 "piwi/composer-symlinker": "dev-master"
@@ -20,7 +20,7 @@ To use this plugin, just add it as a dependency in your `composer.json`:
 You must define concerned local paths or packages as *extra* config entries:
 
 -   `local-dirs`: a list of local paths to scan while searching a local version
-    or a package ; the final package path will be completed with `vendor/package` ;
+    of a package ; the final package path will be completed with `vendor/package` ;
 -   `local-packages`: an array of `vendor/package => local_path` items ;
 -   `local-vendors`: a list of vendors to restrict local scanning.
 
@@ -53,34 +53,57 @@ See *Windows* restrictions on the manual.
 Quick tutorial
 --------------
 
-Let's say you want to work on a project named `YourProject` base on three dependencies:
-`YourPackage1` and `YourPackage2` which are some of your packages, and a third-party
-`ExternalPackage` which is not. As you want to work on both *YourProject* and its dependencies
-*YourPackageX*, you usually first install your dependencies with Composer (as hard copies), to
-let it create a valid `autoload.php`, then you manually replace these hard copies by local
-symbolic links to your clones of `YourPackage1` and `YourPackage2` ...
+Let's say we want to work on a project named `MyProject` base on three dependencies:
+`MyPackage1` and `MyPackage2` which are some of our packages, and a third-party
+`ExternalPackage` which is not. Let's say our localhost architecture is the following:
 
-The plugin can do this for you, as long as you well-configure it and forces Composer to
-use it when installing your packages.
+    [DOCUMENT_ROOT]
+    |
+    |projects/
+    |-------- MyVendor/
+    |----------------- MyPackage1/      // this is a clone of MyVendor/MyPackage1
+    |
+    |MyPackage2/                        // this is a clone of MyVendor/MyPackage2
+    |
+    |MyProject/                         // this is the project we currently work on
+                                        // which depends on other three packages
 
-The common way to force Composer to use the plugin when installing your dependencies would
-be to include it in there *dependencies*. In our case, this is not relevant as you only
-want to use it to build your local environment (it must not be a requirement for other users).
 
-The "best" way to do is:
+As we want to work on both *MyProject* and its dependencies *MyPackageX*, we would usually 
+first install our dependencies with Composer (as hard copies), to let it create a valid 
+`autoload.php`, then we would manually replace these hard copies by local symbolic links to 
+our clones of `MyPackage1` and `MyPackage2` ...
+
+Well, the plugin can do this for us, as long as we well-configure it and forces Composer to
+use it when installing our dependencies.
+
+The common way to force Composer to use the plugin when installing a dependency should
+be to include it in its `require` statement. In our case, this is not relevant as we only
+want to use it to build our local environment (it must not be a requirement for other users).
+A good way to do so is to create a "development-only" composer's configuration file for our
+project to let us install local dependencies with the plugin in our environment but let 
+final users have a "real-life" behavior (the default one).
+
+Our "development-only" `composer.json` could be:
 
 ```json
 "require": {
-    "piwi/composer-symlinker": "dev-master"
+    "piwi/composer-symlinker": "1.*"
 },
 "require-dev": {
     "MyVendor/MyPackage1": "dev-master",
-    "MyVendor/MyPackage1": "dev-master",
+    "MyVendor/MyPackage2": "dev-master",
     "OtherVendor/ExternalPackage": "dev-master"
 },
+"extra": {
+    "local-dirs": "/path/to/DOCUMENT_ROOT/projects/",
+    "local-packages": {
+        "MyVendor/MyPackage2": "/path/to/DOCUMENT_ROOT/MyPackage2"
+    }
+}
 ```
 
-This way, you may first run:
+This way, we may first run:
 
     $ composer install --no-dev
 
@@ -89,3 +112,16 @@ to install the plugin, then:
     $ composer update
 
 will use it to install all packages.
+
+Our final `vendor` directory should be something like:
+
+    [vendor]
+    |
+    |MyVendor/
+    |--------- MyPackage1   => /path/to/DOCUMENT_ROOT/projects/MyVendor/MyPackage1 (symlink)
+    |--------- MyPackage2   => /path/to/DOCUMENT_ROOT/MyPackage2 (symlink)
+    |
+    |OtherVendor/
+    |----------- ExternalPackage/ (hard copy)
+
+and our autoloader will be still valid.
