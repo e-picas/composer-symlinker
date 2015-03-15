@@ -13,6 +13,9 @@
         "psr-0": { "ComposerSymlinker": "src/" }
     },
     "extra": {
-        "class": "ComposerSymlinker\\SymlinkerPlugin"
+        "class": "ComposerSymlinker\\SymlinkerPlugin",
+        "branch-alias": {
+            "dev-master": "1.0.*-dev"
+        }
     }
 }
