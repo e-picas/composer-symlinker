@@ -114,7 +114,7 @@ class LocalInstaller extends LibraryInstaller
     {
         $local_path = $this->getLocalPackagePath($package);
         if (!is_null($local_path)) {
-            $this->io->writeError("  - Installing <info>" . $package->getName() . "</info> (<comment>as a symbolic link of " . $local_path . "</comment>)");
+            $this->io->write("  - Installing <info>" . $package->getName() . "</info> (<comment>as a symbolic link of " . $local_path . "</comment>)");
             $this->initializeVendorSubdir($package);
             if (true !== @symlink($local_path, $this->getInstallPath($package))) {
                 throw new FilesystemSymlinkerException(

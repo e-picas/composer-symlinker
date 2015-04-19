@@ -68,6 +68,18 @@ Let's say we want to work on a project named `MyProject` base on three dependenc
     |MyProject/                         // this is the project we currently work on
                                         // which depends on other three packages
 
+Note: `MyVendor/MyPackage1` and `MyVendor\MyPackage2` must exist in some composer repository
+already before they can be considered by composer to be installed or symlinked.  Typically,
+packages will already be accessible via Packagist.  But if they are local only (no already
+configured repository) then a local one will need to be added to your composer.json.
+It might look like this:
+
+      "repositories": [
+        {
+          "type":"vcs",
+          "url":"/path/to/DOCUMENT_ROOT/projects/MyVendor/MyPackage1"
+        }
+      ]
 
 As we want to work on both *MyProject* and its dependencies *MyPackageX*, we would usually 
 first install our dependencies with Composer (as hard copies), to let it create a valid 
